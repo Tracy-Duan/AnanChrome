@@ -1,5 +1,7 @@
 # AnanChrome
 
+[简体中文](README.md) | [English](README.en.md)
+
 Anan 系列的本地 AI 浏览器助手。通过 Edge / Chrome 侧边栏调用本机 llama.cpp 与 本地（需自行配置，该项目内也提供了直接下载链接） 模型。采用参考 llama.cpp Web UI 的黑色极简中文界面，通过单一输入框自动判断你要对话、联网搜索还是总结网页。
 
 普通对话与网页总结在本地完成；使用联网搜索时，搜索词会发送给 Tavily。

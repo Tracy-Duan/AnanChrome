@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AnanChrome · 设置</title>
+  <link rel="icon" type="image/png" href="icons/icon32.png">
+  <style>
+    :root { color-scheme: dark; --bg:#0b0b0b; --surface:#171717; --surface2:#222; --line:rgba(255,255,255,.1); --text:#f3f3f0; --muted:#92928e; --dim:#666662; --danger:#ff7a73; }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { min-height:100vh; padding:28px 20px 110px; background:var(--bg); color:var(--text); font-family:Inter,"Segoe UI","Microsoft YaHei UI",sans-serif; line-height:1.55; }
+    .page { width:100%; max-width:720px; margin:0 auto; }
+    header { display:flex; align-items:center; gap:12px; padding-bottom:26px; border-bottom:1px solid var(--line); }
+    .brand { width:38px; height:38px; flex:0 0 auto; display:block; object-fit:contain; }
+    header h1 { font-size:21px; letter-spacing:-.03em; }
+    header p { margin-top:2px; color:var(--muted); font-size:12px; }
+    .section { padding:28px 0; border-bottom:1px solid var(--line); }
+    .section-title { display:flex; gap:14px; margin-bottom:22px; }
+    .section-icon { width:34px; height:34px; flex:0 0 auto; border:1px solid var(--line); border-radius:10px; display:grid; place-items:center; background:var(--surface); color:var(--muted); font-size:15px; }
+    .section h2 { font-size:15px; }
+    .section-title p { margin-top:3px; color:var(--dim); font-size:11px; }
+    .field { margin-bottom:20px; }
+    .field:last-child { margin-bottom:0; }
+    label { display:block; margin-bottom:7px; font-size:12.5px; font-weight:650; }
+    .hint { margin:-3px 0 8px; color:var(--dim); font-size:10.5px; }
+    input[type="text"],input[type="number"],input[type="password"],textarea { width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:10px; outline:none; background:var(--surface2); color:var(--text); font:13px inherit; transition:border-color .18s; }
+    input:focus,textarea:focus { border-color:rgba(255,255,255,.3); }
+    textarea { min-height:100px; resize:vertical; line-height:1.6; }
+    .row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    .switch-row { min-height:52px; padding:0 13px; border:1px solid var(--line); border-radius:11px; display:flex; align-items:center; justify-content:space-between; gap:12px; background:var(--surface); }
+    .switch-copy strong { display:block; font-size:12px; }.switch-copy span { color:var(--dim); font-size:10px; }
+    .switch-row input { width:18px; height:18px; accent-color:#eee; }
+    a { color:#d7d7ff; }
+    .privacy { margin-top:12px; padding:11px 13px; border:1px solid var(--line); border-radius:10px; color:var(--muted); background:rgba(255,255,255,.02); font-size:10.5px; }
+    .actions { position:fixed; inset:auto 0 0; padding:14px 20px; border-top:1px solid var(--line); display:flex; justify-content:center; gap:10px; background:rgba(11,11,11,.88); backdrop-filter:blur(14px); }
+    .btn { min-width:126px; padding:10px 18px; border:1px solid transparent; border-radius:10px; background:#eee; color:#111; cursor:pointer; font-weight:650; }
+    .btn:hover { background:#fff; }.btn-secondary { border-color:var(--line); background:var(--surface); color:var(--text); }.btn-secondary:hover { background:var(--surface2); }
+    .btn:disabled { opacity:.55; cursor:default; }
+    .download-card { padding:16px; border:1px solid var(--line); border-radius:14px; background:var(--surface); }
+    .download-card strong { display:block; margin-bottom:6px; font-size:13px; }
+    .download-card .btn { margin:10px 0; }
+    .download-status { font-size:12px; color:var(--muted); overflow-wrap:anywhere; }
+    .download-status.error { color:var(--danger); }
+    progress { width:100%; height:6px; margin:10px 0; accent-color:#ddd; }
+    .toast { position:fixed; bottom:78px; left:50%; padding:9px 18px; border:1px solid var(--line); border-radius:999px; background:#eee; color:#111; font-size:12px; opacity:0; transform:translate(-50%,10px); transition:.2s; pointer-events:none; }
+    .toast.show { opacity:1; transform:translate(-50%,0); }
+    @media(max-width:520px){ body{padding-inline:15px}.row{grid-template-columns:1fr}.actions{padding-inline:15px}.btn{min-width:0;flex:1} }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <img class="brand" src="icons/icon128.png" alt="AnanChrome">
+      <div><h1>AnanChrome 设置</h1><p>配置本地模型、生成方式与联网搜索</p></div>
+    </header>
+
+    <section class="section">
+      <div class="section-title"><div class="section-icon">◇</div><div><h2>本地模型</h2><p>连接电脑上运行的 llama.cpp 服务</p></div></div>
+      <div class="field download-card">
+        <strong>Qwen3.5 · 9B · Q4_K_M</strong>
+        <p class="hint">HauhauCS Aggressive · 约 5.63 GB。下载后自动校验并配置，无需手动移动文件。</p>
+        <button type="button" class="btn" id="downloadModelBtn">下载模型</button>
+        <progress id="modelDownloadProgress" max="100" value="0" hidden></progress>
+        <p id="modelDownloadStatus" class="download-status" role="status" aria-live="polite">正在检查下载状态…</p>
+        <p class="hint" style="margin:10px 0 0">首次使用：先双击整合 ZIP 内的 Install-AnanChrome.cmd 安装内置运行时，再点击下载。下载过程中可以关闭此页面。</p>
+        <a id="modelDownloadLink" href="https://huggingface.co/HauhauCS/Qwen3.5-9B-Uncensored-HauhauCS-Aggressive/resolve/main/Qwen3.5-9B-Uncensored-HauhauCS-Aggressive-Q4_K_M.gguf?download=true" target="_blank" rel="noopener noreferrer">手动下载权重</a>
+      </div>
+      <div class="field">
+        <label for="serverUrl">模型服务地址</label>
+        <p class="hint">llama-server 的 HTTP 地址，默认使用本机 8080 端口</p>
+        <input type="text" id="serverUrl" placeholder="http://127.0.0.1:8080">
+      </div>
+      <div class="field">
+        <label for="model">模型标识</label>
+        <p class="hint">随请求发送的模型名称；实际加载的模型由服务端决定</p>
+        <input type="text" id="model" placeholder="local-model">
+      </div>
+      <div class="field">
+        <label for="systemPrompt">系统提示词</label>
+        <p class="hint">定义 Anan 的身份和回答方式。应用会附加中文思考与输出规则；明确要求外语、代码或翻译时保留所需语言。</p>
+        <textarea id="systemPrompt" rows="4"></textarea>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-title"><div class="section-icon">⌁</div><div><h2>生成设置</h2><p>调整回答的随机性、长度和思考方式</p></div></div>
+      <div class="row">
+        <div class="field"><label for="temperature">采样温度</label><p class="hint">越高越灵活，越低越稳定</p><input type="number" id="temperature" min="0" max="2" step="0.1"></div>
+        <div class="field"><label for="topP">核采样范围</label><p class="hint">控制候选词的概率范围</p><input type="number" id="topP" min="0" max="1" step="0.05"></div>
+      </div>
+      <div class="field"><label for="maxTokens">最大输出长度</label><p class="hint">单次回答最多生成的 Token 数</p><input type="number" id="maxTokens" min="64" max="8192" step="64"></div>
+      <label class="switch-row" for="thinkingMode"><span class="switch-copy"><strong>默认开启思考</strong><span>自动判断问题复杂度，分配 256 或 768 个思考 token</span></span><input type="checkbox" id="thinkingMode"></label>
+    </section>
+
+    <section class="section">
+      <div class="section-title"><div class="section-icon">⌕</div><div><h2>联网搜索</h2><p>需要最新信息时，通过 Tavily 获取搜索结果</p></div></div>
+      <div class="field">
+        <label for="tavilyApiKey">Tavily 密钥</label>
+        <p class="hint">可前往 <a href="https://tavily.com" target="_blank" rel="noopener">Tavily 官网</a> 注册获取</p>
+        <input type="password" id="tavilyApiKey" placeholder="tvly-xxxxxxxxxxxxxxxx">
+      </div>
+      <p class="privacy">隐私提示：普通对话和网页总结由本地模型处理；使用联网搜索时，搜索词会发送给 Tavily。</p>
+      <p class="privacy">历史对话与最多三个网页快照保存在当前浏览器的本地扩展存储，可在历史列表中删除；无痕窗口仅保存到浏览器会话结束。历史记录不上传云端。</p>
+    </section>
+  </div>
+
+  <div class="actions"><button class="btn btn-secondary" id="resetBtn">恢复默认设置</button><button class="btn" id="saveBtn">保存设置</button></div>
+  <div class="toast" id="toast">设置已保存</div>
+  <script src="chat-policy.js"></script>
+  <script src="options.js"></script>
+</body>
+</html>

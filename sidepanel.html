@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="styles/sidepanel.css">
+  <title>AnanChrome</title>
+  <link rel="icon" type="image/png" href="icons/icon32.png">
+</head>
+<body>
+  <div id="appShell">
+    <div id="drawerBackdrop" class="drawer-backdrop hidden"></div>
+
+    <aside id="drawer" class="drawer" aria-hidden="true">
+      <div class="drawer-head">
+        <div class="brand">
+          <img class="brand-mark" src="icons/icon128.png" alt="">
+          <div><strong>AnanChrome</strong><span>本地 AI 浏览器</span></div>
+        </div>
+        <button id="closeDrawerBtn" class="icon-btn" title="关闭菜单" aria-label="关闭菜单">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+
+      <button id="newChatBtn" class="new-chat-btn">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        <span>新建对话</span><kbd>Ctrl N</kbd>
+      </button>
+
+      <nav class="drawer-nav" aria-label="功能菜单">
+        <p class="nav-label">历史对话</p>
+        <div id="chatHistoryList" class="chat-history-list" aria-label="历史对话列表"></div>
+      </nav>
+
+      <div class="drawer-foot">
+        <div class="privacy-note">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 22s8-3 8-10V5l-8-3-8 3v7c0 7 8 10 8 10Z"/><path d="m9 12 2 2 4-4"/></svg>
+          <div><strong>本地优先</strong><span>对话与网页总结在你的电脑上完成</span></div>
+        </div>
+        <div class="server-line">
+          <span id="serverStatus" class="status-dot checking" title="检测中…"></span>
+          <span id="drawerStatusText">正在连接本地模型…</span>
+        </div>
+        <button id="settingsBtn" class="nav-item">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M4.9 4.9 7 7M17 17l2.1 2.1M2 12h3M19 12h3M4.9 19.1 7 17M17 7l2.1-2.1"/></svg>
+          <span>设置</span>
+        </button>
+      </div>
+    </aside>
+
+    <header id="header">
+      <button id="menuBtn" class="icon-btn" title="打开菜单" aria-label="打开菜单">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+      <div class="header-brand"><img class="brand-mark small" src="icons/icon128.png" alt=""><span>AnanChrome</span></div>
+      <button id="headerNewChatBtn" class="icon-btn" title="新建对话" aria-label="新建对话">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+      </button>
+    </header>
+
+    <main id="chatArea">
+      <section id="welcome" class="welcome">
+        <img class="welcome-mark" src="icons/icon128.png" alt="">
+        <h1>你好，我是 Anan</h1>
+        <p>本地运行，安静地帮你阅读、搜索和思考。</p>
+      </section>
+      <div id="messages" aria-live="polite"></div>
+    </main>
+
+    <footer id="inputArea">
+      <section class="context-panel" aria-label="网页记忆">
+        <div class="context-toolbar"><span id="contextCount">网页记忆 · 0/3</span><button id="addPageBtn" type="button">＋ 读取当前页</button></div>
+        <div id="contextSources" class="context-sources" role="group" aria-label="已记住的网页"></div>
+      </section>
+      <div id="toolMenu" class="tool-menu hidden" role="menu">
+        <button id="toolSummaryBtn" role="menuitem">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14v16H5zM8 8h8M8 12h8M8 16h5"/></svg>
+          <span><strong>总结当前网页</strong><small>读取当前标签页内容</small></span>
+        </button>
+        <button id="toolSearchBtn" role="menuitem">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>
+          <span><strong>联网搜索</strong><small>搜索最新资料后回答</small></span>
+        </button>
+      </div>
+
+      <div class="input-wrapper">
+        <textarea id="userInput" placeholder="给 Anan 发消息…" rows="1" aria-label="消息输入框"></textarea>
+        <div class="composer-bar">
+          <div class="composer-left">
+            <button id="toolsBtn" class="circle-btn" title="添加工具" aria-label="添加工具">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+            </button>
+            <button id="thinkToggle" class="think-toggle" aria-pressed="false" title="开启自适应思考">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9.5 4.5A3.5 3.5 0 0 0 6 8v.3A3.5 3.5 0 0 0 4 11.5 3.5 3.5 0 0 0 7.5 15H9v3.5a2.5 2.5 0 0 0 5 0V15h1.5a3.5 3.5 0 0 0 3.5-3.5 3.5 3.5 0 0 0-2-3.2V8a3.5 3.5 0 0 0-7-1"/><path d="M9 8v7M14 8v7"/></svg>
+              <span>思考</span>
+            </button>
+          </div>
+          <div class="composer-right">
+            <div class="model-chip" title="当前本地模型">
+              <span class="model-cube">◇</span><span>Qwen3.5</span><small>9B</small><em>本地</em>
+            </div>
+            <button id="sendBtn" class="send-btn" title="发送（Enter）" aria-label="发送">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 7-7 7 7M12 19V5"/></svg>
+            </button>
+            <button id="stopBtn" class="stop-btn hidden" title="停止生成" aria-label="停止生成">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="7" width="10" height="10" rx="2"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="input-meta"><span id="inputHint"></span><span id="intentHint" class="intent-hint"></span></div>
+    </footer>
+  </div>
+
+  <script src="chat-policy.js"></script>
+  <script src="chat-stream.js"></script>
+  <script src="conversation.js"></script>
+  <script src="chat-library.js"></script>
+  <script src="page-access.js"></script>
+  <script src="sidepanel.js"></script>
+</body>
+</html>

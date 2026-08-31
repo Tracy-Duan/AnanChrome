@@ -1,0 +1,35 @@
+dist/
+runtime/bin/
+runtime/obj/
+runtime/dist/
+*.user
+*.suo
+*.gguf
+tests/**/bin/
+tests/**/obj/
+
+# Local runtime binaries, models, download caches and release archives
+llama.cpp/
+*.exe
+*.dll
+*.pdb
+*.zip
+*.gguf.*
+*.part
+*.log
+
+# Machine-specific configuration and credentials (keep examples)
+runtime/config.json
+runtime/download-state.json
+.env
+.env.*
+!.env.example
+!.env.sample
+*.pem
+*.key
+*.pfx
+*.p12
+.vs/
+.idea/
+.DS_Store
+Thumbs.db

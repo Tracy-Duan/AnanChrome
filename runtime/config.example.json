@@ -1,0 +1,10 @@
+{
+  "serverUrl": "http://127.0.0.1:8080",
+  "llamaServerPath": "%LOCALAPPDATA%\\AnanChrome\\LlamaCpp\\llama-server.exe",
+  "modelDirectory": "%LOCALAPPDATA%\\AnanChrome\\Models",
+  "modelPath": "",
+  "port": 8080,
+  "contextSize": 8192,
+  "gpuLayers": -1,
+  "startupTimeoutSeconds": 120
+}

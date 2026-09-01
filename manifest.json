@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAoJWnnGNV18K0ZIH04SKKchiw5i0bBSPl7q3c/dPtF9S959/0y0G25/Q7zy9wa1oYHRPs3QnJHLRowmKpNkPvu1MOD3836/tE+8EbboSQB92hXHPlmwwVYzaHHQVftqmtXh6XF3l/NZj6ck47pueAI7G5Wavo2uGactN3r1P8s4vEFxA0VZcReIDvrDFc5NW6SEu41Re+zD7+OwW42SZq12M/F8FPh5XGQ2ef9CeijrfewjIUsI4fN84n/0w3ofvj9n/LCihNCIN9yc0kKUhQunTIgWJHg6SztZ4yfO8BVYSu/sxXIb+9RUtfQh9aaxBP/3P/L8a7kkOLaiqyrrPMvQIDAQAB",
   "name": "AnanChrome - 本地 AI 浏览器助手",
-  "version": "1.5.0",
+  "version": "1.5.4",
   "description": "使用本地 Qwen 模型，在浏览器侧边栏中对话、搜索和总结网页",
   "permissions": [
     "sidePanel",

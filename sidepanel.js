@@ -33,6 +33,7 @@
   let isRouting = false;
   let abortController = null;
   let serverCheckPromise = null;
+  let openingFlareTimer = null;
 
   /* ── DOM 元素 ── */
   const $  = (sel) => document.querySelector(sel);
@@ -64,6 +65,7 @@
   const addPageBtn = $('#addPageBtn');
   const contextSources = $('#contextSources');
   const contextCount = $('#contextCount');
+  const openingAura = $('#openingAura');
 
   /* ══════════════════════════════════════════
      初始化
@@ -72,6 +74,7 @@
     settings = await loadSettings();
 
     bindEvents();
+    playOpeningFlare();
     updateStreamingUI();
     await restoreConversation();
     isInitializing = false;
@@ -83,6 +86,15 @@
   }
 
   function isBusy() { return isInitializing || isPreparing || isStreaming || isRouting; }
+
+  function playOpeningFlare() {
+    if (!openingAura || document.hidden || window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
+    clearTimeout(openingFlareTimer);
+    openingAura.classList.remove('opening-flare');
+    // Two frames guarantee that reopening a retained side panel restarts the CSS animation.
+    requestAnimationFrame(() => requestAnimationFrame(() => openingAura.classList.add('opening-flare')));
+    openingFlareTimer = setTimeout(() => openingAura.classList.remove('opening-flare'), 5200);
+  }
 
   async function restoreConversation() {
     try {
@@ -461,6 +473,10 @@ COMPLEX：需要多步推理、比较权衡、代码设计、长篇写作、综�
      事件绑定
      ══════════════════════════════════════════ */
   function bindEvents() {
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) playOpeningFlare();
+    });
+    window.addEventListener('pageshow', playOpeningFlare);
     sendBtn.addEventListener('click', () => handleSend());
     userInput.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' && !e.shiftKey) {
